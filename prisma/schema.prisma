@@ -6,9 +6,15 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+// 🔄 PRODUCTION REMINDER:
+// When deploying to production with PostgreSQL:
+// 1. Change provider to "postgresql"
+// 2. Update DATABASE_URL to your PostgreSQL connection string
+// 3. Run: npx prisma generate && npx prisma db push
 
 // ============================================================================
 // User Management
@@ -21,7 +27,7 @@ model User {
   email           String?
   avatarUrl       String?
   hederaAccountId String?  @unique // For receiving NFT badges
-  accessToken     String?  @db.Text // Encrypted GitHub access token
+  accessToken     String? // Encrypted GitHub access token
 
   repositories    Repository[]
   offsetPurchases OffsetPurchase[]
@@ -244,7 +250,7 @@ model WebhookEvent {
   payload     Json     // Full webhook payload
 
   processed   Boolean  @default(false)
-  error       String?  @db.Text
+  error       String?
 
   createdAt   DateTime @default(now())
 

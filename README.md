@@ -75,7 +75,7 @@ prisma/
 
 ### Backend
 - **Next.js API Routes** - Serverless functions
-- **PostgreSQL** - Database
+- **SQLite** (development) / **PostgreSQL** (production)
 - **Prisma** - ORM with type safety
 
 ### Blockchain
@@ -94,43 +94,86 @@ prisma/
 
 ### Prerequisites
 
+**For Development:**
 - Node.js 18+
-- PostgreSQL
-- GitHub OAuth App
-- Hedera Testnet Account
-- Guardian Testnet Access
+- GitHub OAuth App (optional for local testing)
+- Hedera Testnet Account (optional - can use mock Guardian)
 
-### Installation
+**For Production:**
+- All development prerequisites
+- PostgreSQL database
+- Guardian instance (local Docker or testnet access)
+
+### Quick Start (Development)
 
 ```bash
-# Install dependencies
+# 1. Install dependencies
 npm install
 
-# Set up environment
+# 2. Set up environment
 cp .env.example .env
-# Edit .env with your credentials
+# The default .env uses SQLite - no PostgreSQL needed for development!
 
-# Generate Prisma client
-npm run db:generate
+# 3. Initialize development database (SQLite)
+./setup-dev-db.sh
 
-# Push database schema
-npm run db:push
-
-# Run development server
+# 4. Run development server
 npm run dev
+
+# 5. Test the API (optional)
+npm run test:api
 ```
+
+The development setup uses **SQLite** for simplicity - no PostgreSQL installation required!
 
 ### Database Setup
 
+#### Development (SQLite)
+
 ```bash
-# Generate Prisma client
-npm run db:generate
+# Quick setup with provided script
+./setup-dev-db.sh
 
-# Push schema to database
-npm run db:push
+# OR manually:
+npx prisma generate    # Generate Prisma client
+npx prisma db push     # Create SQLite database
+```
 
-# Open Prisma Studio (GUI)
+The development database is stored in `./dev.db` (gitignored).
+
+#### Production (PostgreSQL)
+
+**⚠️ IMPORTANT: When switching to production with PostgreSQL:**
+
+1. **Update Prisma Schema**
+   ```prisma
+   // In prisma/schema.prisma
+   datasource db {
+     provider = "postgresql"  // Change from "sqlite"
+     url      = env("DATABASE_URL")
+   }
+   ```
+
+2. **Update Environment Variable**
+   ```bash
+   # In .env
+   DATABASE_URL="postgresql://user:password@host:5432/gitgreen?schema=public"
+   ```
+
+3. **Regenerate Client & Push Schema**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+#### Useful Commands
+
+```bash
+# Open Prisma Studio (database GUI)
 npm run db:studio
+
+# Reset database (development only)
+rm dev.db && npx prisma db push
 ```
 
 ---
