@@ -3,7 +3,7 @@
  * Handles database operations for carbon emissions
  */
 
-import { Emission, EmissionStatus } from '@prisma/client';
+import { Emission, EmissionStatus } from './prisma-types';
 import { BaseRepository } from './base.repository';
 
 export class EmissionRepository extends BaseRepository<Emission> {
@@ -108,10 +108,10 @@ export class EmissionRepository extends BaseRepository<Emission> {
       orderBy: { periodStart: 'asc' },
     });
 
-    const total = emissions.reduce((sum, e) => sum + e.totalCO2kg, 0);
-    const cicd = emissions.reduce((sum, e) => sum + e.cicdCO2kg, 0);
-    const cloud = emissions.reduce((sum, e) => sum + (e.cloudCO2kg || 0), 0);
-    const ai = emissions.reduce((sum, e) => sum + (e.aiCO2kg || 0), 0);
+    const total = emissions.reduce((sum: number, e: Emission) => sum + e.totalCO2kg, 0);
+    const cicd = emissions.reduce((sum: number, e: Emission) => sum + e.cicdCO2kg, 0);
+    const cloud = emissions.reduce((sum: number, e: Emission) => sum + (e.cloudCO2kg || 0), 0);
+    const ai = emissions.reduce((sum: number, e: Emission) => sum + (e.aiCO2kg || 0), 0);
 
     return {
       emissions,

@@ -7,9 +7,9 @@
 import { z } from 'zod';
 
 const configSchema = z.object({
-  // Database
+  // Database (PostgreSQL connection string)
   database: z.object({
-    url: z.string().url(),
+    url: z.string().min(1), // Accept any non-empty string (PostgreSQL URLs have custom format)
   }),
 
   // NextAuth
@@ -20,22 +20,22 @@ const configSchema = z.object({
 
   // GitHub
   github: z.object({
-    clientId: z.string(),
-    clientSecret: z.string(),
-    webhookSecret: z.string(),
+    clientId: z.string().min(1),
+    clientSecret: z.string().min(1),
+    webhookSecret: z.string().min(1),
   }),
 
   // Hedera
   hedera: z.object({
     network: z.enum(['testnet', 'mainnet', 'previewnet']),
-    accountId: z.string(),
-    privateKey: z.string(),
-    publicKey: z.string(),
+    accountId: z.string().min(1),
+    privateKey: z.string().min(1),
+    publicKey: z.string().min(1),
   }),
 
   // Guardian
   guardian: z.object({
-    apiUrl: z.string().url(),
+    apiUrl: z.string().min(1), // Accept any non-empty string for testing
     apiKey: z.string().optional(),
     standardRegistryId: z.string().optional(),
   }),

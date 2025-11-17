@@ -3,7 +3,7 @@
  * Handles database operations for GitHub repositories
  */
 
-import { Repository } from '@prisma/client';
+import { Repository } from './prisma-types';
 import { BaseRepository } from './base.repository';
 
 export class RepositoryRepository extends BaseRepository<Repository> {

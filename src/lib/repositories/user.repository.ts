@@ -3,7 +3,7 @@
  * Handles all database operations for users
  */
 
-import { User } from '@prisma/client';
+import { User } from './prisma-types';
 import { BaseRepository } from './base.repository';
 
 export class UserRepository extends BaseRepository<User> {
