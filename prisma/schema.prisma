@@ -1,0 +1,270 @@
+// GitGreen Database Schema
+// Modular design - each model is independent and can be extended
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// User Management
+// ============================================================================
+
+model User {
+  id              String   @id @default(cuid())
+  githubId        String   @unique
+  githubUsername  String
+  email           String?
+  avatarUrl       String?
+  hederaAccountId String?  @unique // For receiving NFT badges
+  accessToken     String?  @db.Text // Encrypted GitHub access token
+
+  repositories    Repository[]
+  offsetPurchases OffsetPurchase[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([githubId])
+  @@index([githubUsername])
+  @@map("users")
+}
+
+// ============================================================================
+// Repository Management
+// ============================================================================
+
+model Repository {
+  id             String   @id @default(cuid())
+  githubRepoId   String   @unique
+  name           String
+  owner          String
+  fullName       String   // owner/name for easy lookup
+  description    String?
+  defaultBranch  String   @default("main")
+  isPrivate      Boolean  @default(false)
+
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  isTracking     Boolean  @default(true)
+  lastSyncedAt   DateTime?
+
+  emissions      Emission[]
+  badges         Badge[]
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([githubRepoId])
+  @@index([userId])
+  @@index([fullName])
+  @@map("repositories")
+}
+
+// ============================================================================
+// Carbon Emissions Tracking
+// ============================================================================
+
+model Emission {
+  id              String   @id @default(cuid())
+  repositoryId    String
+  repository      Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  periodStart     DateTime
+  periodEnd       DateTime
+
+  // Emission breakdown
+  totalCO2kg      Float
+  cicdCO2kg       Float
+  cloudCO2kg      Float?   // Future feature
+  aiCO2kg         Float?   // Future feature
+
+  // Calculation metadata
+  calculationData Json     // Detailed breakdown of all workflows
+  methodology     String   @default("v1.0")
+
+  // Guardian integration
+  guardianTokenId String?  @unique // Minted emission token ID
+  guardianTxHash  String?  // Guardian transaction hash
+
+  status          EmissionStatus @default(CALCULATED)
+
+  offsetPurchases OffsetPurchase[]
+  retirements     Retirement[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([repositoryId])
+  @@index([status])
+  @@index([periodStart, periodEnd])
+  @@map("emissions")
+}
+
+enum EmissionStatus {
+  CALCULATED  // Carbon calculated, not yet minted
+  MINTED      // Emission token minted on Guardian
+  OFFSET      // Offset purchased
+  RETIRED     // Emission + Offset retired
+}
+
+// ============================================================================
+// Carbon Offset Marketplace
+// ============================================================================
+
+model OffsetPurchase {
+  id              String   @id @default(cuid())
+
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  emissionId      String
+  emission        Emission @relation(fields: [emissionId], references: [id], onDelete: Cascade)
+
+  // Offset details
+  co2kg           Float
+  projectName     String
+  projectType     String   // e.g., "reforestation", "renewable_energy"
+  projectId       String?  // Guardian project ID
+
+  // Pricing
+  priceHBAR       Float
+  priceUSD        Float?
+  hbarUsdRate     Float?   // Exchange rate at time of purchase
+
+  // Guardian integration
+  guardianTokenId String?  @unique
+  guardianTxHash  String?
+
+  // Hedera payment
+  hederaTxId      String?  @unique
+
+  status          OffsetStatus @default(PENDING)
+
+  retirements     Retirement[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([emissionId])
+  @@index([status])
+  @@map("offset_purchases")
+}
+
+enum OffsetStatus {
+  PENDING     // Payment pending
+  PURCHASED   // Offset purchased, token minted
+  RETIRED     // Retired against emission
+}
+
+// ============================================================================
+// Token Retirement (Matching Emission + Offset)
+// ============================================================================
+
+model Retirement {
+  id                String   @id @default(cuid())
+
+  emissionId        String
+  emission          Emission @relation(fields: [emissionId], references: [id])
+
+  offsetPurchaseId  String
+  offsetPurchase    OffsetPurchase @relation(fields: [offsetPurchaseId], references: [id])
+
+  emissionTokenId   String
+  offsetTokenId     String
+
+  // Hedera smart contract execution
+  hederaTxId        String   @unique // Retirement transaction
+
+  // Certificate NFT
+  certificateNFTId  String?  @unique
+  certificateUrl    String?  // IPFS URL for certificate metadata
+
+  createdAt         DateTime @default(now())
+
+  @@index([emissionId])
+  @@index([offsetPurchaseId])
+  @@map("retirements")
+}
+
+// ============================================================================
+// Achievement Badges & NFTs
+// ============================================================================
+
+model Badge {
+  id            String   @id @default(cuid())
+
+  repositoryId  String
+  repository    Repository @relation(fields: [repositoryId], references: [id], onDelete: Cascade)
+
+  type          BadgeType
+  name          String
+  description   String
+
+  // NFT details
+  nftTokenId    String?  @unique // HTS token ID
+  imageUrl      String   // Badge image
+  metadata      Json?    // Additional badge metadata
+
+  // Display on GitHub
+  badgeUrl      String?  // Public badge URL
+
+  createdAt     DateTime @default(now())
+
+  @@index([repositoryId])
+  @@index([type])
+  @@map("badges")
+}
+
+enum BadgeType {
+  CARBON_NEUTRAL      // Fully offset for current period
+  FIRST_OFFSET        // First offset purchase
+  GREEN_STREAK_30     // 30 days carbon neutral
+  EFFICIENCY_EXPERT   // Reduced footprint 50%
+  CLIMATE_CHAMPION    // Carbon negative for 6 months
+}
+
+// ============================================================================
+// GitHub Webhook Events (for debugging & audit)
+// ============================================================================
+
+model WebhookEvent {
+  id          String   @id @default(cuid())
+
+  eventType   String   // e.g., "workflow_run", "push"
+  action      String?  // e.g., "completed"
+
+  repositoryId String?
+  payload     Json     // Full webhook payload
+
+  processed   Boolean  @default(false)
+  error       String?  @db.Text
+
+  createdAt   DateTime @default(now())
+
+  @@index([eventType])
+  @@index([processed])
+  @@index([createdAt])
+  @@map("webhook_events")
+}
+
+// ============================================================================
+// System Configuration (for Guardian policies, etc.)
+// ============================================================================
+
+model SystemConfig {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  description String?
+
+  updatedAt   DateTime @updatedAt
+
+  @@map("system_config")
+}
