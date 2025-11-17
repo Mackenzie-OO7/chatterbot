@@ -1,14 +1,18 @@
 /**
  * Guardian Integration Test
  * Tests connection to Guardian API and token minting
+ * Uses factory to automatically switch between mock and real Guardian
  */
 
 import 'dotenv/config';
-import { guardianService } from './lib/services/guardian/guardian.service';
+import { getGuardianService } from './lib/services/guardian';
 import { EmissionTokenData } from './lib/types';
 
 async function testGuardianIntegration() {
   console.log('🧪 Testing Guardian Integration...\n');
+
+  // Get Guardian service (mock or real based on USE_MOCK_GUARDIAN env var)
+  const guardianService = getGuardianService();
 
   try {
     // Test 1: Authentication
