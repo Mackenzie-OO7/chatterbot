@@ -176,6 +176,8 @@ export interface IGuardianService {
   // Policies
   getPolicies(): Promise<GuardianPolicy[]>;
   getPolicy(policyId: string): Promise<GuardianPolicy>;
+  setPolicyId(policyId: string): void;
+  getPolicyId(): string;
 
   // Tokens
   mintEmissionToken(data: EmissionTokenData): Promise<string>;
