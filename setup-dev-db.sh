@@ -9,7 +9,8 @@ echo ""
 
 # Step 1: Generate Prisma Client
 echo "1️⃣  Generating Prisma Client..."
-npx prisma generate
+echo "   (Using workaround for Cloudflare CDN issues...)"
+PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 npx prisma generate
 
 if [ $? -ne 0 ]; then
   echo "❌ Failed to generate Prisma client"
@@ -21,7 +22,7 @@ echo ""
 
 # Step 2: Push schema to SQLite database
 echo "2️⃣  Creating SQLite database..."
-npx prisma db push
+PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 npx prisma db push
 
 if [ $? -ne 0 ]; then
   echo "❌ Failed to create database"
