@@ -40,6 +40,40 @@ export default function Dashboard() {
       {/* Grid Pattern */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-30" />
 
+      {/* Background Trees - Sustainability Theme */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
+        <div className="absolute top-16 left-8 text-8xl opacity-[0.03]">🌲</div>
+        <div className="absolute top-40 right-12 text-7xl opacity-[0.04]">🌳</div>
+        <div className="absolute bottom-60 left-24 text-6xl opacity-[0.03]">🌲</div>
+        <div className="absolute bottom-32 right-28 text-8xl opacity-[0.04]">🌳</div>
+        <div className="absolute top-1/3 left-1/5 text-7xl opacity-[0.02]">🌳</div>
+        <div className="absolute top-2/3 right-1/5 text-7xl opacity-[0.03]">🌲</div>
+      </div>
+
+      {/* Background Code Snippets - Developer Theme */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none font-mono text-green-400">
+        <div className="absolute top-24 right-32 text-sm opacity-[0.04]">
+          const emissions = <br />
+          &nbsp;&nbsp;calculateWorkflow(repo);
+        </div>
+        <div className="absolute bottom-80 left-36 text-xs opacity-[0.03]">
+          await guardian.mint(&#123;<br />
+          &nbsp;&nbsp;co2kg: totalEmissions<br />
+          &#125;);
+        </div>
+        <div className="absolute top-1/2 left-12 text-xs opacity-[0.03]">
+          if (status === &apos;OFFSET&apos;) &#123;<br />
+          &nbsp;&nbsp;badge.mint();<br />
+          &#125;
+        </div>
+        <div className="absolute bottom-40 right-24 text-sm opacity-[0.04]">
+          const offset = await<br />
+          &nbsp;&nbsp;marketplace.purchase(&#123;<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;amount: co2kg<br />
+          &nbsp;&nbsp;&#125;);
+        </div>
+      </div>
+
       <div className="relative z-10">
         {/* Header */}
         <header className="border-b border-green-500/20 glass-dark">
