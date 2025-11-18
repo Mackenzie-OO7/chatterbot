@@ -17,33 +17,33 @@ export default function Home() {
 
       {/* Background Trees - Sustainability Theme */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-        <div className="absolute top-10 left-5 text-9xl opacity-[0.03]">🌲</div>
-        <div className="absolute top-32 right-10 text-8xl opacity-[0.04]">🌳</div>
-        <div className="absolute bottom-40 left-20 text-7xl opacity-[0.03]">🌲</div>
-        <div className="absolute bottom-20 right-32 text-9xl opacity-[0.04]">🌳</div>
-        <div className="absolute top-1/3 left-1/4 text-6xl opacity-[0.02]">🌲</div>
-        <div className="absolute top-2/3 right-1/4 text-8xl opacity-[0.03]">🌳</div>
+        <div className="absolute top-10 left-5 text-9xl opacity-[0.08]">🌲</div>
+        <div className="absolute top-32 right-10 text-8xl opacity-[0.10]">🌳</div>
+        <div className="absolute bottom-40 left-20 text-7xl opacity-[0.08]">🌲</div>
+        <div className="absolute bottom-20 right-32 text-9xl opacity-[0.10]">🌳</div>
+        <div className="absolute top-1/3 left-1/4 text-6xl opacity-[0.06]">🌲</div>
+        <div className="absolute top-2/3 right-1/4 text-8xl opacity-[0.08]">🌳</div>
       </div>
 
       {/* Background Code Snippets - Developer Theme */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none font-mono text-green-400">
-        <div className="absolute top-20 right-40 text-sm opacity-[0.04]">
+        <div className="absolute top-20 right-40 text-sm opacity-[0.10]">
           const calculateCarbon = () =&gt; &#123;<br />
           &nbsp;&nbsp;return emissions * factor;<br />
           &#125;;
         </div>
-        <div className="absolute bottom-60 left-40 text-xs opacity-[0.03]">
+        <div className="absolute bottom-60 left-40 text-xs opacity-[0.08]">
           function trackEmissions(repo) &#123;<br />
           &nbsp;&nbsp;const data = await fetch();<br />
           &nbsp;&nbsp;return processData(data);<br />
           &#125;
         </div>
-        <div className="absolute top-1/2 left-10 text-xs opacity-[0.03]">
+        <div className="absolute top-1/2 left-10 text-xs opacity-[0.08]">
           if (emission.status === &apos;MINTED&apos;) &#123;<br />
           &nbsp;&nbsp;console.log(&apos;Token created&apos;);<br />
           &#125;
         </div>
-        <div className="absolute bottom-32 right-20 text-sm opacity-[0.04]">
+        <div className="absolute bottom-32 right-20 text-sm opacity-[0.10]">
           await guardian.mintToken(&#123;<br />
           &nbsp;&nbsp;amount: co2kg,<br />
           &nbsp;&nbsp;repository: repo.id<br />

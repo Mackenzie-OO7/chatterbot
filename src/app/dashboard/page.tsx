@@ -42,31 +42,31 @@ export default function Dashboard() {
 
       {/* Background Trees - Sustainability Theme */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-        <div className="absolute top-16 left-8 text-8xl opacity-[0.03]">🌲</div>
-        <div className="absolute top-40 right-12 text-7xl opacity-[0.04]">🌳</div>
-        <div className="absolute bottom-60 left-24 text-6xl opacity-[0.03]">🌲</div>
-        <div className="absolute bottom-32 right-28 text-8xl opacity-[0.04]">🌳</div>
-        <div className="absolute top-1/3 left-1/5 text-7xl opacity-[0.02]">🌳</div>
-        <div className="absolute top-2/3 right-1/5 text-7xl opacity-[0.03]">🌲</div>
+        <div className="absolute top-16 left-8 text-8xl opacity-[0.08]">🌲</div>
+        <div className="absolute top-40 right-12 text-7xl opacity-[0.10]">🌳</div>
+        <div className="absolute bottom-60 left-24 text-6xl opacity-[0.08]">🌲</div>
+        <div className="absolute bottom-32 right-28 text-8xl opacity-[0.10]">🌳</div>
+        <div className="absolute top-1/3 left-1/5 text-7xl opacity-[0.06]">🌳</div>
+        <div className="absolute top-2/3 right-1/5 text-7xl opacity-[0.08]">🌲</div>
       </div>
 
       {/* Background Code Snippets - Developer Theme */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none select-none font-mono text-green-400">
-        <div className="absolute top-24 right-32 text-sm opacity-[0.04]">
+        <div className="absolute top-24 right-32 text-sm opacity-[0.10]">
           const emissions = <br />
           &nbsp;&nbsp;calculateWorkflow(repo);
         </div>
-        <div className="absolute bottom-80 left-36 text-xs opacity-[0.03]">
+        <div className="absolute bottom-80 left-36 text-xs opacity-[0.08]">
           await guardian.mint(&#123;<br />
           &nbsp;&nbsp;co2kg: totalEmissions<br />
           &#125;);
         </div>
-        <div className="absolute top-1/2 left-12 text-xs opacity-[0.03]">
+        <div className="absolute top-1/2 left-12 text-xs opacity-[0.08]">
           if (status === &apos;OFFSET&apos;) &#123;<br />
           &nbsp;&nbsp;badge.mint();<br />
           &#125;
         </div>
-        <div className="absolute bottom-40 right-24 text-sm opacity-[0.04]">
+        <div className="absolute bottom-40 right-24 text-sm opacity-[0.10]">
           const offset = await<br />
           &nbsp;&nbsp;marketplace.purchase(&#123;<br />
           &nbsp;&nbsp;&nbsp;&nbsp;amount: co2kg<br />
